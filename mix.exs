@@ -5,7 +5,7 @@ defmodule CloudfrontSigner.MixProject do
     [
       app: :cloudfront_signer,
       version: "0.1.0",
-      elixir: "~> 1.6",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       package: package(),
       description: description(),
@@ -22,7 +22,7 @@ defmodule CloudfrontSigner.MixProject do
 
   defp deps do
     [
-      {:poison, "~> 3.1"},
+      {:poison, "~> 4.0"},
       {:timex, "~> 3.1"},
       {:ex_doc, "~> 0.14", only: :dev}
     ]
