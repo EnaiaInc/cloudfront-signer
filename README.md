@@ -35,5 +35,5 @@ If you want to cache pem decodes (which is a wise choice), a registry of decoded
 
 ```elixir
 CloudfrontSigner.DistributionRegistry.get_distribution(:my_app, :my_distribution)
-|> CloudfrontSigner.sign(path, [arg: "value], expiry)
+|> CloudfrontSigner.sign(path, [arg: "value"], expiry)
 ```
