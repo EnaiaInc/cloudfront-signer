@@ -22,7 +22,7 @@ defmodule CloudfrontSigner.MixProject do
 
   defp deps do
     [
-      {:poison, "~> 4.0"},
+      {:poison, "~> 5.0"},
       {:timex, "~> 3.1"},
       {:ex_doc, "~> 0.14", only: :dev}
     ]
