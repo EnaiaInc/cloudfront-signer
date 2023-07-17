@@ -24,7 +24,8 @@ defmodule CloudfrontSigner.MixProject do
     [
       {:poison, "~> 5.0"},
       {:timex, "~> 3.1"},
-      {:ex_doc, "~> 0.14", only: :dev}
+      {:ex_doc, "~> 0.14", only: :dev},
+      {:jason, "~> 1.4"}
     ]
   end
 

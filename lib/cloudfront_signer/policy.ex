@@ -12,7 +12,7 @@ defmodule CloudfrontSigner.Policy do
     """
     def to_string(%{resource: resource, expiry: expiry}) do
       aws_policy(resource, expiry)
-      |> Poison.encode!()
+      |> Jason.encode!()
     end
 
     defp aws_policy(resource, expiry) do
