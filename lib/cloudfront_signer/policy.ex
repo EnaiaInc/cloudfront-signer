@@ -8,26 +8,33 @@ defmodule CloudfrontSigner.Policy do
 
   defimpl String.Chars, for: CloudfrontSigner.Policy do
     @doc """
-    json encodes a policy
+    Generates a JSON policy string with deterministic key ordering.
+
+    AWS CloudFront requires the exact JSON format specified in their documentation:
+    https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-canned-policy.html
+
+    The key order MUST be: Statement -> Resource -> Condition -> DateLessThan -> AWS:EpochTime
+
+    This is critical because CloudFront validates the signature against the exact
+    JSON string. Map key ordering in Elixir/OTP is non-deterministic, so we must
+    use Jason.OrderedObject to ensure consistent key ordering across all environments.
     """
     def to_string(%{resource: resource, expiry: expiry}) do
-      aws_policy(resource, expiry)
+      # Build the policy with explicit key ordering matching AWS documentation.
+      # Using Jason.OrderedObject preserves insertion order during JSON encoding.
+      Jason.OrderedObject.new([
+        {"Statement", [
+          Jason.OrderedObject.new([
+            {"Resource", resource},
+            {"Condition", Jason.OrderedObject.new([
+              {"DateLessThan", Jason.OrderedObject.new([
+                {"AWS:EpochTime", expiry}
+              ])}
+            ])}
+          ])
+        ]}
+      ])
       |> Jason.encode!()
-    end
-
-    defp aws_policy(resource, expiry) do
-      %{
-        Statement: [
-          %{
-            Resource: resource, 
-            Condition: %{
-              DateLessThan: %{
-                "AWS:EpochTime": expiry
-              }
-            }
-          }
-        ]
-      }
     end
   end
 end
